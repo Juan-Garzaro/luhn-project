@@ -18,10 +18,7 @@ pipeline {
 
         stage('Debug Workspace') {
             steps {
-                sh '''
-                pwd
-                ls -R
-                '''
+                sh 'pwd && ls -R .'
             }
         }
 
@@ -32,7 +29,7 @@ pipeline {
                 -v $WORKSPACE/backend:/app \
                 -w /app \
                 python:3.10 \
-                python -m pip install -r requirements.txt
+                bash -c "ls -la && python -m pip install --upgrade pip && pip install -r requirements.txt"
                 '''
             }
         }
@@ -56,7 +53,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                docker compose -f docker-compose.yml up -d
+                docker compose down || true
+                docker compose up -d --build
                 '''
             }
         }
@@ -64,7 +62,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 sh '''
-                curl http://localhost:8001 || true
+                curl -f http://localhost:8001 || echo "Backend no responde"
                 '''
             }
         }
@@ -72,7 +70,7 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline ejecutado correctamente 🚀"
+            echo "Pipeline OK ✅"
         }
         failure {
             echo "Pipeline falló ❌ revisa logs"
