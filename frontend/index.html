@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Luhn Validator</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      width: 180px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .course {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #2a5298;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2a5298;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e3c72;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .valid { color: green; }
+    .invalid { color: red; }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- LOGO -->
+  <img class="logo" src="logo.png" alt="Logo Universidad">
+
+  <!-- TITULO -->
+  <h1>Validador Luhn</h1>
+
+  <!-- CURSO -->
+  <div class="course">
+    Proyecto Final DevOps - Orquestación de Servicios
+  </div>
+
+  <input id="number" placeholder="Ingrese número" />
+
+  <button onclick="validate()">Validar</button>
+
+  <h2 id="result"></h2>
+
+  <!-- FOOTER -->
+  <footer>
+    Administración de Sistemas Operativos y DEVOPS 
+  </footer>
+
+</div>
+
+<script>
+async function validate() {
+  const number = document.getElementById("number").value;
+
+  try {
+    const res = await fetch("/api/validate", {  // 🔥 CAMBIO CLAVE
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ number })
+    });
+
+    const data = await res.json();
+    const result = document.getElementById("result");
+
+    if (data.valid) {
+      result.innerText = "✅ Número válido";
+      result.className = "valid";
+    } else {
+      result.innerText = "❌ Número no válido";
+      result.className = "invalid";
+    }
+
+  } catch (error) {
+    document.getElementById("result").innerText = "⚠️ Error de conexión";
+  }
+}
+</script>
+
+</body>
+</html>

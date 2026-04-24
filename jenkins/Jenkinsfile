@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/tu-repo/luhn-project.git'
+            }
+        }
+
+        stage('Test Backend') {
+            steps {
+                sh 'pip install -r backend/requirements.txt'
+                sh 'pytest backend/test_app.py'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                sh 'curl http://localhost:8001/health'
+            }
+        }
+    }
+}

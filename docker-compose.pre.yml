@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+
+  backend:
+    container_name: luhn-backend-pre
+    ports:
+      - "8002:8001"
+    environment:
+      DB_NAME: luhn_pre
+
+  frontend:
+    container_name: luhn-frontend-pre
+    ports:
+      - "3001:80"
+
+  db:
+    container_name: luhn-db-pre
+    environment:
+      POSTGRES_DB: luhn_pre
+
+  adminer:
+    container_name: luhn-adminer-pre
+    ports:
+      - "8081:8080"

@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS valid_numbers (
+    id SERIAL PRIMARY KEY,
+    number VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
