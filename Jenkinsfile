@@ -26,7 +26,7 @@ pipeline {
                 -v $WORKSPACE/backend:/app \
                 -w /app \
                 python:3.10 \
-                bash -c "ls -la && python -m pip install --upgrade pip && pip install -r requirements.txt"
+                bash -c "set -e; ls -la; python -m pip install --upgrade pip; pip install -r requirements.txt"
                 '''
             }
         }
@@ -38,7 +38,7 @@ pipeline {
                 -v $WORKSPACE/backend:/app \
                 -w /app \
                 python:3.10 \
-                bash -c "python test_app.py"
+                bash -c "set -e; python test_app.py"
                 '''
             }
         }
