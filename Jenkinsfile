@@ -1,16 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        BACKEND_DIR = "backend"
-        FRONTEND_DIR = "frontend"
-    }
-
     stages {
 
         stage('Checkout') {
             steps {
-                echo "Clonando repo desde GitHub"
                 git branch: 'main',
                     url: 'https://github.com/Juan-Garzaro/luhn-project.git'
             }
@@ -37,7 +31,7 @@ pipeline {
             }
         }
 
-        stage('Run Backend Basic Test') {
+        stage('Run Backend Tests') {
             steps {
                 sh '''
                 docker run --rm \
