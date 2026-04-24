@@ -18,7 +18,10 @@ pipeline {
 
         stage('Debug Workspace') {
             steps {
-                sh 'pwd && ls -R .'
+                sh '''
+                pwd
+                ls -R .
+                '''
             }
         }
 
@@ -30,6 +33,18 @@ pipeline {
                 -w /app \
                 python:3.10 \
                 bash -c "ls -la && python -m pip install --upgrade pip && pip install -r requirements.txt"
+                '''
+            }
+        }
+
+        stage('Run Backend Basic Test') {
+            steps {
+                sh '''
+                docker run --rm \
+                -v $WORKSPACE/backend:/app \
+                -w /app \
+                python:3.10 \
+                bash -c "python test_app.py"
                 '''
             }
         }
