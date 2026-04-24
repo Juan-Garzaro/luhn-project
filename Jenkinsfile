@@ -15,21 +15,14 @@ pipeline {
             }
         }
 
-        stage('Debug Workspace') {
+       stage('Test Backend') {
             steps {
-                sh 'pwd'
-                sh 'ls -R'
-            }
-        }
-
-        stage('Test Backend') {
-            steps {
-                sh '''
-                docker run --rm \
-                -v $WORKSPACE/backend:/app \
-                -w /app python:3.10 \
-                bash -c "pip install -r requirements.txt"
-                '''
+            sh '''
+            docker run --rm \
+            -v $WORKSPACE/backend:/app \
+            python:3.10 \
+            sh -c "cd /app && python -m pip install -r requirements.txt"
+            '''
             }
         }
 
